@@ -32,33 +32,38 @@ Ce projet a été développé en utilisant les standards modernes de l'industrie
 ### Via Docker (Recommandé)
 L'application peut être lancée instantanément sans installer Node.js :
 
-\`\`\`bash
-# Construire l'image
+**1. Construire l'image**
+```bash
 docker build -t sql-mastery .
+```
 
-# Lancer le conteneur sur le port 8080
+**2. Lancer le conteneur sur le port 8080**
+```bash
 docker run -p 8080:80 sql-mastery
-\`\`\`
+```
 Ouvrez ensuite `http://localhost:8080` dans votre navigateur.
 
 ### En mode Développement
-\`\`\`bash
-# Installation des dépendances
-npm install
 
-# Lancer le serveur de développement
+**Installation des dépendances**
+```bash
+npm install
+```
+
+**Lancer le serveur de développement**
+```bash
 npm run dev
-\`\`\`
+```
 
 ## 📝 Structure du Projet
 
-\`\`\`text
+```text
 src/
 ├── components/    # Composants React réutilisables (Navbar, Editor, Console...)
 ├── data/          # Définition du Curriculum et Seed de la base de données
 ├── lib/           # Logique métier (Moteur SQL, Utilitaires)
 └── App.tsx        # Point d'entrée principal
-\`\`\`
+```
 
 ---
-*Développé avec ❤️ par [Ton Nom] - 2024*
+*Développé avec ❤️ par Rashid Kadisha alias RichelieuxAvenue - 2024*
