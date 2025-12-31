@@ -66,4 +66,4 @@ src/
 ```
 
 ---
-*Développé avec ❤️ par Rashid Kadisha alias RichelieuxAvenue - 2024*
+*Développé avec ❤️ par Rashid Kadisha alias RichelieuxAvenue - 2025*
