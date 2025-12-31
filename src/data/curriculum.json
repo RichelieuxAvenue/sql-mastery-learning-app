@@ -1,0 +1,340 @@
+[
+    {
+        "section": "Type 1",
+        "items": [
+            {
+                "id": "1.1",
+                "question": "Afficher les caractéristiques des produits (c’est-à-dire, pour chaque produit, afficher ses caractéristiques).",
+                "answers": [
+                    "select * from PRODUIT"
+                ]
+            },
+            {
+                "id": "1.2",
+                "question": "Afficher la liste des localités dans lesquelles il existe au moins un client.",
+                "answers": [
+                    "select distinct LOCALITE from CLIENT"
+                ]
+            },
+            {
+                "id": "1.3",
+                "question": "Afficher le numéro, le nom et la localité des clients de catégorie C1 n’habitant pas à Toulouse.",
+                "answers": [
+                    "select NCLI, NOM, LOCALITE from CLIENT where CAT = 'C1' and LOCALITE <> 'Toulouse'"
+                ]
+            },
+            {
+                "id": "1.4",
+                "question": "Afficher les caractéristiques des produits en acier.",
+                "answers": [
+                    "select * from PRODUIT where LIBELLE like '%ACIER%'"
+                ]
+            },
+            {
+                "id": "1.5",
+                "question": "Donner le numéro, le nom et le compte des clients de Poitiers et de Bruxelles dont le compte est positif.",
+                "answers": [
+                    "select NCLI, NOM, COMPTE from CLIENT where LOCALITE in ('Poitiers','Bruxelles') and COMPTE > 0"
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Type 2",
+        "items": [
+            {
+                "id": "1.7",
+                "question": "Quelles catégories de clients trouve-t-on à Toulouse ?",
+                "answers": [
+                    "select distinct CAT from CLIENT where LOCALITE = 'Toulouse' and CAT is not NULL"
+                ]
+            },
+            {
+                "id": "1.8",
+                "question": "Afficher le numéro, le nom et la localité des clients dont le nom précède alphabétiquement la localité où ils résident.",
+                "answers": [
+                    "select NCLI, NOM, LOCALITE from CLIENT where NOM < LOCALITE"
+                ]
+            },
+            {
+                "id": "1.9",
+                "question": "Afficher le total, le minimum, la moyenne et le maximum des comptes des clients (compte non tenu des commandes actuelles).",
+                "answers": [
+                    "select sum(COMPTE) as somme, avg(COMPTE) as moyenne, min(COMPTE) as minimum, max(COMPTE) as maximum from CLIENT"
+                ]
+            },
+            {
+                "id": "1.10",
+                "question": "Afficher les numéros des clients qui commandent le produit de numéro 'CS464'.",
+                "answers": [
+                    "select distinct NCLI from COMMANDE where NCOM in (select NCOM from DETAIL where NPRO = 'CS464')"
+                ]
+            },
+            {
+                "id": "1.11",
+                "question": "Afficher les localités des clients qui commandent le produit de numéro 'CS464'.",
+                "answers": [
+                    "select distinct LOCALITE from CLIENT where NCLI in (select NCLI from COMMANDE where NCOM in (select NCOM from DETAIL where NPRO = 'CS464'))"
+                ]
+            },
+            {
+                "id": "1.12",
+                "question": "Donner le numéro et le nom des clients de Namur qui n'ont pas passé de commandes.",
+                "answers": [
+                    "select NCLI, NOM from CLIENT where NCLI not in (select NCLI from COMMANDE) and LOCALITE = 'Namur'",
+                    "select NCLI, NOM from CLIENT where not exists (select * from COMMANDE where NCLI = CLIENT.NCLI) and LOCALITE = 'Namur'"
+                ]
+            },
+            {
+                "id": "1.13",
+                "question": "Quels sont les produits en sapin qui font l'objet d'une commande ?",
+                "answers": [
+                    "select NPRO from PRODUIT where LIBELLE like '%SAPIN%' and exists (select * from DETAIL where NPRO = PRODUIT.NPRO)",
+                    "select NPRO from PRODUIT where LIBELLE like '%SAPIN%' and NPRO in (select NPRO from DETAIL)",
+                    "select distinct NPRO from PRODUIT P, DETAIL D where LIBELLE like '%SAPIN%' and P.NPRO = D.NPRO"
+                ]
+            },
+            {
+                "id": "1.14",
+                "question": "Rechercher les clients qui, s'ils ont un compte négatif, ont passé au moins une commande.",
+                "answers": [
+                    "Select NCLI from CLIENT WHERE COMPTE>0 OR NCLI in (select NCLI from COMMANDE)"
+                ]
+            },
+            {
+                "id": "1.15",
+                "question": "Rechercher les autres clients (ceux de 1.14 inverse).",
+                "answers": [
+                    "select NCLI from CLIENT where COMPTE <0 and NCLI not in (select NCLI from COMMANDE)"
+                ]
+            },
+            {
+                "id": "1.16",
+                "question": "Rechercher les commandes qui, si elles référencent des produits en sapin, référencent aussi des produits en acier.",
+                "answers": [
+                    "select NCOM from DETAIL where NPRO not in (select NPRO from PRODUIT where LIBELLE like '%SAPIN%') or NPRO in (select NPRO from Produit where LIBELLE like '%ACIER%')"
+                ]
+            },
+            {
+                "id": "1.17.1",
+                "question": "Clients habitant à Lille ou à Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE from CLIENT where LOCALITE in ('Lille','Namur')"
+                ]
+            },
+            {
+                "id": "1.17.4",
+                "question": "Clients qui n’habitent ni à Lille ni à Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE from CLIENT where LOCALITE not in ('Lille','Namur')"
+                ]
+            },
+            {
+                "id": "1.17.6",
+                "question": "Clients de catégorie C1 habitant à Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT = 'C1' and LOCALITE = 'Namur'"
+                ]
+            },
+            {
+                "id": "1.17.7",
+                "question": "Clients de catégorie C1 ou habitant à Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT = 'C1' or LOCALITE = 'Namur'"
+                ]
+            },
+            {
+                "id": "1.17.8",
+                "question": "Clients de catégorie C1 n’habitant pas à Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT = 'C1' and LOCALITE <> 'Namur'"
+                ]
+            },
+            {
+                "id": "1.17.9",
+                "question": "Clients qui n’ont pas été sélectionnés dans la question précédente.",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT <> 'C1' or CAT is NULL or LOCALITE = 'Namur'"
+                ]
+            },
+            {
+                "id": "1.17.10",
+                "question": "Clients soit B1/C1, soit Lille/Namur (inclusive).",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT in ('B1','C1') or LOCALITE in ('Lille','Namur')"
+                ]
+            },
+            {
+                "id": "1.17.11",
+                "question": "Clients soit B1/C1, soit Lille/Namur (exclusive - XOR).",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where (CAT in ('B1','C1') and LOCALITE not in ('Lille','Namur')) or (CAT not in ('B1','C1') and LOCALITE in ('Lille','Namur'))"
+                ]
+            },
+            {
+                "id": "1.17.12",
+                "question": "Clients B1/C1 ET Lille/Namur.",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT in ('B1','C1') and LOCALITE in ('Lille','Namur')"
+                ]
+            },
+            {
+                "id": "1.17.13",
+                "question": "Clients qui n'ont pas été sélectionnés dans la question précédente (Non A ou Non B).",
+                "answers": [
+                    "select NCLI, LOCALITE, CAT from CLIENT where CAT not in ('B1','C1') or LOCALITE not in ('Lille','Namur')"
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Type 3",
+        "items": [
+            {
+                "id": "1.18",
+                "question": "Calculer le montant de chaque détail de commande.",
+                "answers": [
+                    "select D.QCOM*P.PRIX as MONTANT from DETAIL D, PRODUIT P where D.NPRO=P.NPRO"
+                ]
+            },
+            {
+                "id": "1.19",
+                "question": "Afficher la valeur totale des stocks.",
+                "answers": [
+                    "select sum(QSTOCK*PRIX) as TOTAL from PRODUIT"
+                ]
+            },
+            {
+                "id": "1.20",
+                "question": "Calculer le montant commandé des produits en sapin.",
+                "answers": [
+                    "select sum(D.QCOM*P.PRIX) as MONTANT from DETAIL D, PRODUIT P where D.NPRO=P.NPRO and P.LIBELLE like '%SAPIN%'"
+                ]
+            },
+            {
+                "id": "1.21.1",
+                "question": "Statistiques par catégorie.",
+                "answers": [
+                    "select sum(COMPTE), avg(COMPTE), count(COMPTE) from CLIENT group by CAT"
+                ]
+            },
+            {
+                "id": "1.21.2",
+                "question": "Statistiques par localité.",
+                "answers": [
+                    "select sum(COMPTE), avg(COMPTE), count(COMPTE) from CLIENT group by LOCALITE"
+                ]
+            },
+            {
+                "id": "1.21.3",
+                "question": "Statistiques par catégorie dans chaque localité.",
+                "answers": [
+                    "select sum(COMPTE), avg(COMPTE), count(COMPTE) from CLIENT group by LOCALITE, CAT"
+                ]
+            },
+            {
+                "id": "1.23",
+                "question": "Combien y a-t-il de commandes spécifiant un (ou plusieurs) produit(s) en acier ?",
+                "answers": [
+                    "select count(*) from COMMANDE where NCOM in (select NCOM from DETAIL where NPRO in (select NPRO from PRODUIT where LIBELLE like '%ACIER%'))",
+                    "select count(*) from COMMANDE M where NCOM in (select NCOM from DETAIL D, PRODUIT P where D.NPRO = P.NPRO and LIBELLE like '%ACIER%')",
+                    "select count(distinct M.NCOM) from COMMANDE M, DETAIL D, PRODUIT P where M.NCOM = D.NCOM and D.NPRO = P.NPRO and LIBELLE like '%ACIER%'"
+                ]
+            },
+            {
+                "id": "1.24",
+                "question": "Dans combien de localités trouve-t-on des clients de catégorie C1 ?",
+                "answers": [
+                    "select count(distinct LOCALITE) from CLIENT where CAT = 'C1'"
+                ]
+            },
+            {
+                "id": "1.25",
+                "question": "Créer une table DETAIL_COM et y ranger les détails enrichis.",
+                "answers": [
+                    "insert into DETAIL_COM(NCOM, DATECOM, QCOM, NPRO, PRIX, MONTANT) select M.NCOM, DATECOM, QCOM, P.NPRO, PRIX, QCOM*PRIX from COMMANDE M, DETAIL D, PRODUIT P where M.NCOM=D.NCOM and D.NPRO=P.NPRO"
+                ]
+            },
+            {
+                "id": "1.26",
+                "question": "Annuler les comptes négatifs des clients de catégorie C1.",
+                "answers": [
+                    "update CLIENT set COMPTE=0 where COMPTE<0 and CAT='C1'"
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Type 4",
+        "items": [
+            {
+                "id": "1.30",
+                "question": "Afficher le numéro et le nom des clients qui n’ont pas commandé de produits en sapin.",
+                "answers": [
+                    "select NCLI, NOM from CLIENT where NCLI not in (select NCLI from COMMANDE where NCOM in (select NCOM from DETAIL where NPRO in (select NPRO from PRODUIT where LIBELLE like '%SAPIN%')))"
+                ]
+            },
+            {
+                "id": "1.31",
+                "question": "Rechercher les clients qui, s'ils ont commandé le produit PA60, en ont commandé plus de 500 unités au total.",
+                "answers": [
+                    "select NCLI from CLIENT C where NCLI not in (select NCLI from COMMANDE where NCOM in (select NCOM from DETAIL where NPRO='PA60' or (select sum(QCOM) from DETAIL where NCOM in (select NCOM from COMMANDE where NCLI=C.NCLI))>500))"
+                ]
+            },
+            {
+                "id": "1.35",
+                "question": "Calculer le montant de chaque commande.",
+                "answers": [
+                    "select NCOM, sum(QCOM*PRIX) from COMMANDE M, DETAIL D, PRODUIT P where M.NCOM=D.NCOM and D.NPRO=P.NPRO group by NCOM"
+                ]
+            },
+            {
+                "id": "1.36",
+                "question": "Calculer le montant dû par chaque client (avec 0 si pas de commande).",
+                "answers": [
+                    "select NCLI, sum(QCOM*PRIX) from CLIENT C, COMMANDE M, DETAIL D, PRODUIT P where C.NCLI=M.NCLI and M.NCOM=D.NCOM and D.NPRO=P.NPRO group by NCLI union select NCLI, 0 from CLIENT C where C.NCLI not in (select NCLI from COMMANDE)"
+                ]
+            },
+            {
+                "id": "1.40",
+                "question": "Rechercher les anomalies d'intégrité référentielle (Détails sans Commande).",
+                "answers": [
+                    "select NCOM, NPRO from DETAIL D where not exists (select * from COMMANDE where NCOM = D.NCOM)"
+                ]
+            },
+            {
+                "id": "1.41",
+                "question": "Vérifier que toute commande a au moins un détail (Commandes sans détail).",
+                "answers": [
+                    "select NCOM from COMMANDE M where not exists (select * from DETAIL where NCOM = M.NCOM)"
+                ]
+            },
+            {
+                "id": "1.46",
+                "question": "Produire une table de couples <X,Y> de clients tels que X et Y habitent dans la même localité.",
+                "answers": [
+                    "select C1.LOCALITE, C1.NCLI, C2.NCLI from CLIENT C1, CLIENT C2 where C1.NCLI<C2.NCLI and C1.LOCALITE = C2.LOCALITE order by C1.LOCALITE, C1.NCLI, C2.NCLI"
+                ]
+            }
+        ]
+    },
+    {
+        "section": "Type 5",
+        "items": [
+            {
+                "id": "1.57",
+                "question": "Rechercher les clients qui ont commandé tous les produits.",
+                "answers": [
+                    "select NCLI from CLIENT C where not exists (select * from PRODUIT where NPRO not in (select NPRO from DETAIL D, COMMANDE M where D.NCOM=M.NCOM and M.NCLI = C.NCLI))"
+                ]
+            },
+            {
+                "id": "1.58",
+                "question": "Dans quelles localités a-t-on commandé tous les produits en acier ?",
+                "answers": [
+                    "select distinct LOCALITE from CLIENT C where not exists (select * from PRODUIT where LIBELLE like '%ACIER%' and NPRO not in (select NPRO from DETAIL D, COMMANDE M, CLIENT CC where D.NCOM = M.NCOM and M.NCLI = C.NCLI and CC.LOCALITE = C.LOCALITE))"
+                ]
+            }
+        ]
+    }
+]
